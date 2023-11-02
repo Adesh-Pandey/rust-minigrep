@@ -1,6 +1,8 @@
+use std::env;
 pub struct Config {
     pub file_name: String,
     pub query: String,
+    pub ignore_case: bool,
 }
 impl Config {
     pub fn build_config(args: &[String]) -> Result<Config, &'static str> {
@@ -9,7 +11,13 @@ impl Config {
         }
         let file_name = args[1].clone();
         let query = args[2].clone();
-        Ok(Config { file_name, query })
+        let ignore_case = env::var("IGNORE_CASE").is_ok();
+
+        Ok(Config {
+            file_name,
+            query,
+            ignore_case,
+        })
     }
 }
 #[cfg(test)]
@@ -17,14 +25,31 @@ mod tests {
     use super::*;
 
     #[test]
-    fn one_result() {
+    fn case_sensative() {
         let query = "duct";
         let contents = "\
-        Rust:
-        safe, fast, productive.
-        Pick three.";
+Rust:
+safe, fast, productive.
+Pick three.
+Duct tape
+        ";
 
         assert_eq!(vec!["safe, fast, productive."], search(query, contents));
+    }
+    #[test]
+    fn case_insensative() {
+        let query = "RusT";
+
+        let contents = "\
+Rust:
+safe, fast, productive
+Pick there
+rust
+        ";
+        assert_eq!(
+            vec!["Rust:", "rust"],
+            search_case_insensative(query, contents)
+        );
     }
 }
 
@@ -36,4 +61,16 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
         }
     }
     results
+}
+
+pub fn search_case_insensative<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    let mut result = Vec::new();
+    let query = query.to_lowercase();
+
+    for line in contents.lines() {
+        if line.to_lowercase().contains(&query) {
+            result.push(line);
+        }
+    }
+    result
 }

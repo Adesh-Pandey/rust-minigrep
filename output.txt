@@ -1,0 +1,9 @@
+Searching for hello
+In file file.txt
+
+Results : 
+
+Note: Case sensative
+
+hello bro
+hello adesh 
