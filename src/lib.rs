@@ -9,8 +9,8 @@ impl Config {
         if args.len() < 3 {
             return Err("Not enough arguments");
         }
-        let file_name = args[1].clone();
-        let query = args[2].clone();
+        let file_name = args[2].clone();
+        let query = args[3].clone();
         let ignore_case = env::var("IGNORE_CASE").is_ok();
 
         Ok(Config {
@@ -39,7 +39,6 @@ Duct tape
     #[test]
     fn case_insensative() {
         let query = "RusT";
-
         let contents = "\
 Rust:
 safe, fast, productive
@@ -73,4 +72,21 @@ pub fn search_case_insensative<'a>(query: &str, contents: &'a str) -> Vec<&'a st
         }
     }
     result
+}
+
+pub struct SearchForFileConfig<'a> {
+    pub file_name: &'a str,
+    pub parent_location: &'a str,
+}
+
+impl<'a> SearchForFileConfig<'a> {
+    pub fn build_search_for_file_config(args: &[String]) -> SearchForFileConfig {
+        let file_name = &args[3];
+        let parent_location = &args[2];
+
+        SearchForFileConfig {
+            file_name,
+            parent_location,
+        }
+    }
 }
