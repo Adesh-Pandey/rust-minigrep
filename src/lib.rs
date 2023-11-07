@@ -81,8 +81,8 @@ pub struct SearchForFileConfig<'a> {
 
 impl<'a> SearchForFileConfig<'a> {
     pub fn build_search_for_file_config(args: &[String]) -> SearchForFileConfig {
-        let file_name = &args[3];
-        let parent_location = &args[2];
+        let file_name = &args[0];
+        let parent_location = &args[1];
 
         SearchForFileConfig {
             file_name,
