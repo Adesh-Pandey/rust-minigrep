@@ -58,11 +58,15 @@ pub fn search_file_parent_helper(config: SearchForFileConfig) {
     let mut dir_queue: Vec<String> = Vec::new();
 
     dir_queue.push(config.parent_location.to_string());
+    let mut found_file: bool = false;
     while dir_queue.len() > 0 {
         if search_for_file_by_queue(config.file_name, &mut dir_queue) {
-            println!("found file");
+            found_file = true;
             break;
         }
+    }
+    if !found_file {
+        println!("file not found");
     }
 }
 
@@ -89,6 +93,7 @@ pub fn search_for_file_by_queue(file_name_from_user: &str, dir_queue: &mut Vec<S
         if path.is_file() {
             let name = name_clone.clone();
             if *name == *search_file_config.file_name {
+                println!("found file at {}", search_file_config.parent_location);
                 return true;
             }
         } else if path.is_dir() {
