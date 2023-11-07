@@ -12,5 +12,5 @@ cli tool for searching text in a file, file in a dir.
 
 searching for the file function uses a BFS strategy.
   
-
+WARNING - There are good amount of error handled with panic or unwrap which can be fixed.
   
