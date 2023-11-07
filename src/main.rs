@@ -68,10 +68,8 @@ pub fn search_file_parent_helper(config: SearchForFileConfig) {
 
 pub fn search_for_file_by_queue(file_name_from_user: &str, dir_queue: &mut Vec<String>) -> bool {
     let curr_dir = dir_queue.pop().unwrap();
-    println!("\ncurrently in {} dir \n", curr_dir);
     let mut args: Vec<String> = Vec::new();
 
-    let clone = curr_dir.clone();
     args.push(file_name_from_user.to_string());
 
     args.push(curr_dir.clone());
@@ -94,7 +92,7 @@ pub fn search_for_file_by_queue(file_name_from_user: &str, dir_queue: &mut Vec<S
                 return true;
             }
         } else if path.is_dir() {
-            dir_queue.push(clone.clone() + &path.to_string_lossy().to_string());
+            dir_queue.push(path.to_string_lossy().to_string());
         } else {
             println!("Unknown: {}", file_name);
         }
