@@ -20,6 +20,22 @@ impl Config {
         })
     }
 }
+pub struct SearchForFileConfig<'a> {
+    pub file_name: &'a str,
+    pub parent_location: &'a str,
+}
+
+impl<'a> SearchForFileConfig<'a> {
+    pub fn build_search_for_file_config(args: &[String]) -> SearchForFileConfig {
+        let file_name = &args[0];
+        let parent_location = &args[1];
+
+        SearchForFileConfig {
+            file_name,
+            parent_location,
+        }
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -72,21 +88,4 @@ pub fn search_case_insensative<'a>(query: &str, contents: &'a str) -> Vec<&'a st
         }
     }
     result
-}
-
-pub struct SearchForFileConfig<'a> {
-    pub file_name: &'a str,
-    pub parent_location: &'a str,
-}
-
-impl<'a> SearchForFileConfig<'a> {
-    pub fn build_search_for_file_config(args: &[String]) -> SearchForFileConfig {
-        let file_name = &args[0];
-        let parent_location = &args[1];
-
-        SearchForFileConfig {
-            file_name,
-            parent_location,
-        }
-    }
 }
